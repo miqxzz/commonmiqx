@@ -5,6 +5,7 @@
 ## Установка
 
 ```bash
+
 go get github.com/miqxzz/commonmiqx
 ```
 
