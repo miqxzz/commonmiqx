@@ -1,4 +1,4 @@
-module github.com/miqxzz/commonmiqxzz
+module github.com/miqxzz/commonmiqx
 
 go 1.24.0
 
