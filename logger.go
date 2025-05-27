@@ -1,33 +1,36 @@
-package commonmiqx
+package common
 
 import (
+	"os"
+	"path/filepath"
+
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
-// Logger представляет собой обертку над zap.Logger
-type Logger struct {
-	*zap.Logger
-}
+// InitLogger инициализирует логгер с настройками для вывода в файл и консоль
+func InitLogger() (*zap.Logger, error) {
+	// Создаем директорию для логов, если она не существует
+	if err := os.MkdirAll("logs", 0755); err != nil {
+		return nil, err
+	}
 
-// NewLogger создает новый экземпляр логгера
-func NewLogger() (*Logger, error) {
-	logger, err := zap.NewProduction()
+	// Создаем конфигурацию для логгера
+	config := zap.NewProductionConfig()
+	config.EncoderConfig.TimeKey = "timestamp"
+	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+
+	// Настраиваем вывод в файл
+	config.OutputPaths = []string{
+		filepath.Join("logs", "app.log"),
+		"stdout",
+	}
+
+	// Создаем логгер
+	logger, err := config.Build()
 	if err != nil {
 		return nil, err
 	}
-	return &Logger{logger}, nil
-}
 
-// NewDevelopmentLogger создает логгер для разработки
-func NewDevelopmentLogger() (*Logger, error) {
-	logger, err := zap.NewDevelopment()
-	if err != nil {
-		return nil, err
-	}
-	return &Logger{logger}, nil
+	return logger, nil
 }
-
-// Sync синхронизирует буфер логгера
-func (l *Logger) Sync() error {
-	return l.Logger.Sync()
-} 
