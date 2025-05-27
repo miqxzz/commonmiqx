@@ -1,5 +1,8 @@
 module github.com/miqxzz/commonmiqx
 
-go 1.24.0
+go 1.21
 
-require github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+require (
+	github.com/golang-jwt/jwt/v5 v5.0.0
+	go.uber.org/zap v1.26.0
+)

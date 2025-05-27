@@ -22,7 +22,7 @@ func NewJWTUtil(secretKey string) *JWTUtil {
 }
 
 func (j *JWTUtil) GenerateToken(userID int, role string) (string, error) {
-	expirationTime := time.Now().Add(14 * time.Hour) // Example: 72 hours expiration
+	expirationTime := time.Now().Add(14 * time.Hour) // Example: 14 hours expiration
 	claims := &Claims{
 		UserID: userID,
 		Role:   role,
